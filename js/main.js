@@ -22,6 +22,8 @@
     const timeLimit = 3 * 1000;
     // 開始時間
     let startTime;
+    // ゲーム状態変数
+    let isPlaying = false;
 
     const target = document.getElementById('target');
     const scoreLabel = document.getElementById('score');
@@ -50,16 +52,26 @@
 
         // 0秒になったらゲームオーバー
         if (timeLeft < 0) {
+            isPlaying = false;
             clearTimeout(timeoutId);
             timerLabel.textContent = '0.00';
             setTimeout(() => {
-                alert('Game Over');
+                showResult();
             }, 100);
         }
     }
 
+    function showResult() {
+        const accuracy = score + miss === 0 ? 0 : score / (score + miss) * 100;
+        alert(`${score} letters, ${miss} misses, ${accuracy.toFixed(2)}  accuracy!`);
+    }
+
     // ゲームスタート時の文字切替え
     window.addEventListener('click', () => {
+        if (isPlaying === true) {
+            return;
+        }
+        isPlaying = true;
         target.textContent = word;
         // ゲーム開始時刻を代入
         startTime = Date.now();
@@ -68,6 +80,9 @@
 
     // ゲーム中でキーボードを押した時のイベント設定
     window.addEventListener('keydown', e => {
+        if (isPlaying !== true) {
+            return;
+        }
         // OK
         if (e.key === word[loc]) {
             loc++;
