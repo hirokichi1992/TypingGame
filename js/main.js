@@ -15,9 +15,9 @@
 
     // タイピングワードをランダムに表示させる
     let word = words[Math.floor(Math.random() * words.length)];
-    let loc = 0;
-    let score = 0;
-    let miss = 0;
+    let loc;
+    let score;
+    let miss;
     // 制限時間(ミリ秒単位10^-3)
     const timeLimit = 3 * 1000;
     // 開始時間
@@ -58,10 +58,13 @@
             setTimeout(() => {
                 showResult();
             }, 100);
+            target.textContent = 'Click to replay!';
         }
     }
 
+    // 結果画面表示
     function showResult() {
+        // 0で割る場合を回避
         const accuracy = score + miss === 0 ? 0 : score / (score + miss) * 100;
         alert(`${score} letters, ${miss} misses, ${accuracy.toFixed(2)}  accuracy!`);
     }
@@ -72,6 +75,13 @@
             return;
         }
         isPlaying = true;
+        // 変数初期化
+        loc = 0;
+        score = 0;
+        miss = 0;
+        scoreLabel.textContent = score;
+        missLabel.textContent = miss;
+        word = words[Math.floor(Math.random() * words.length)];
         target.textContent = word;
         // ゲーム開始時刻を代入
         startTime = Date.now();
