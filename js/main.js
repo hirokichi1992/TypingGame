@@ -4,9 +4,6 @@
     const words = [
         'java',
         'c',
-        'c+',
-        'c++',
-        'c#',
         'javascript',
         'html',
         'css',
@@ -46,6 +43,19 @@
         const timeLeft = startTime + timeLimit - Date.now();
         // 秒単位で表示(1/1000)し、小数点以下2桁まで表示(toFixed(2))
         timerLabel.textContent = (timeLeft / 1000).toFixed(2);
+
+        const timeoutId = setTimeout(() => {
+            updateTimer();
+        }, 10);
+
+        // 0秒になったらゲームオーバー
+        if (timeLeft < 0) {
+            clearTimeout(timeoutId);
+            timerLabel.textContent = '0.00';
+            setTimeout(() => {
+                alert('Game Over');
+            }, 100);
+        }
     }
 
     // ゲームスタート時の文字切替え
